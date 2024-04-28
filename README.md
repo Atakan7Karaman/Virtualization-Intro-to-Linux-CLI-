@@ -48,10 +48,25 @@ We used some commands to list all of the groups in the system, and then we used 
 
 ![image](https://github.com/Atakan7Karaman/Virtualization-Intro-to-Linux-CLI-/assets/164254350/4cd61251-ae6e-4fab-b10e-7c7004a89804)
 
-The last couple of steps had to do with managing permissions, specifically we learned about the chmod and chown commands. 
+The last couple of steps had to do with managing permissions, specifically, we learned about the chmod and chown commands. 
 
 ### Independent Examination
 
-In this part of the assignment we had to use what we learned so far to adjust the groups, the owners, and the permissions of the virtual lab that we were working on. 
- 
+In this part of the assignment we had to use what we learned so far to adjust the groups, the owners, and the permissions for the various groups that were in the virtual machine the lab was hosted on. We were given a description of the desired states that the groups should be in, as well as a general description of the employees in the company and the roles/responsibilities that these employees have. Once we got the groups to their desired state, we used the “ls -l /G/” command to display the final state of the groups. 
+
+![image](https://github.com/Atakan7Karaman/Virtualization-Intro-to-Linux-CLI-/assets/164254350/b47d9ab0-d807-4d8a-824b-ec586382e340)
+
+ The above picture has both “ls -l /G/” and “getent group sudo accounting finance hr it legal” commands. Below I have also listed the steps I took to get to the above results. 
+
+ My workflow for the Independent Examination is as follows: 
+
+1. I created the Accounting directory using “mkdir”, and moved it into the /G/ directory.
+2. I created an “accounting” group using “sudo groupadd accounting”.
+3. “chgrp” command allowed me to change the owner of the “Accounting” directory to the group “accounting”.
+4. I created an admin account for the systems administrator, as I figured it would be best if he had different accounts for when he needed elevated privileges and for everyday use. This new account is named “tim-admin” and I also added him to the “sudo” group using “sudo usermod -a -G tim-admin sudo”.
+5. “chown” command allowed me to change the owner of the different directories to the sysadmin account that I created, “tim-admin”.
+6. “chmod” allowed me to change the permissions of the different directories. I decided to allow full read write and execute privileges to both the owner of the directory, the sysadmin, as well as the members of the group. The people not belonging to that group can’t alter or read the files in the directory.
+7. Now that the directories had the right groups, owners, and permissions, I moved on to making sure all of the users were in the right groups.
+8. I used the “usermod -a -G” command to add users to groups, and the “gpasswd -d” command to remove users from groups. In this step, I also made the decision to remove the CEO (mark) from the various directories. I figured if one of these groups wanted the CEO to know something, they could probably generate a report and give the CEO the information that way. I didn’t see a reason for letting Mark have editing privileges over every group in the company. The final change I made here was that since I created an admin account for the sysadmin, I removed the regular account that “tim” has from the “sudo” group, and just kept it in the regular “it” group.
+
 
